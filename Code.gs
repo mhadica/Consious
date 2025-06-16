@@ -30,7 +30,9 @@ function doPost(e) {
       'message': 'Data saved successfully'
     }))
     .setMimeType(ContentService.MimeType.JSON)
-    .setHeader('Access-Control-Allow-Origin', '*');
+    .setHeader('Access-Control-Allow-Origin', 'https://consious-25.vercel.app')
+    .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    .setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
   } catch(error) {
     // Return error response with CORS headers
@@ -39,7 +41,9 @@ function doPost(e) {
       'message': error.toString()
     }))
     .setMimeType(ContentService.MimeType.JSON)
-    .setHeader('Access-Control-Allow-Origin', '*');
+    .setHeader('Access-Control-Allow-Origin', 'https://consious-25.vercel.app')
+    .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    .setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
 }
 
@@ -50,7 +54,9 @@ function doGet(e) {
     'message': 'GET request received'
   }))
   .setMimeType(ContentService.MimeType.JSON)
-  .setHeader('Access-Control-Allow-Origin', '*');
+  .setHeader('Access-Control-Allow-Origin', 'https://consious-25.vercel.app')
+  .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+  .setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
 // Function to set up the sheet headers
