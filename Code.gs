@@ -26,22 +26,19 @@ function doPost(e) {
     
     // Return success response
     return ContentService.createTextOutput('success')
-      .setMimeType(ContentService.MimeType.TEXT)
-      .setHeader('Access-Control-Allow-Origin', '*');
+      .setMimeType(ContentService.MimeType.TEXT);
     
   } catch(error) {
     // Return error response
     return ContentService.createTextOutput('error: ' + error.toString())
-      .setMimeType(ContentService.MimeType.TEXT)
-      .setHeader('Access-Control-Allow-Origin', '*');
+      .setMimeType(ContentService.MimeType.TEXT);
   }
 }
 
 // Add doGet function to handle CORS preflight requests
 function doGet(e) {
   return ContentService.createTextOutput('success')
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeader('Access-Control-Allow-Origin', '*');
+    .setMimeType(ContentService.MimeType.TEXT);
 }
 
 // Function to set up the sheet headers
