@@ -5,7 +5,7 @@ const SHEET_NAME = 'Sheet1';
 function doPost(e) {
   try {
     // Parse the incoming data
-    const data = JSON.parse(e.postData.contents);
+    const data = JSON.parse(e.parameter.data);
     
     // Get the specific sheet by name
     const ss = SpreadsheetApp.openById(SHEET_ID);
@@ -25,26 +25,20 @@ function doPost(e) {
     sheet.appendRow(rowData);
     
     // Return success response
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'success',
-      'message': 'Data saved successfully'
-    })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput('success')
+      .setMimeType(ContentService.MimeType.TEXT);
     
   } catch(error) {
     // Return error response
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'error',
-      'message': error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput('error: ' + error.toString())
+      .setMimeType(ContentService.MimeType.TEXT);
   }
 }
 
 // Add doGet function to handle CORS preflight requests
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    'status': 'success',
-    'message': 'GET request received'
-  })).setMimeType(ContentService.MimeType.JSON);
+  return ContentService.createTextOutput('success')
+    .setMimeType(ContentService.MimeType.TEXT);
 }
 
 // Function to set up the sheet headers

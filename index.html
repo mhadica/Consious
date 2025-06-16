@@ -162,20 +162,17 @@
                 return response.text();
             })
             .then(text => {
-                try {
-                    const data = JSON.parse(text);
-                    if (data.status === 'success') {
-                        alert('Registration successful! Thank you for joining Conscious Campus.');
-                        document.getElementById('registrationForm').reset();
-                        // Reset conditional fields
-                        document.querySelectorAll('.conditional-field').forEach(field => {
-                            field.classList.remove('show');
-                        });
-                    } else {
-                        throw new Error(data.message || 'Something went wrong');
-                    }
-                } catch (e) {
-                    throw new Error('Invalid response from server');
+                if (text === 'success') {
+                    alert('Registration successful! Thank you for joining Conscious Campus.');
+                    document.getElementById('registrationForm').reset();
+                    // Reset conditional fields
+                    document.querySelectorAll('.conditional-field').forEach(field => {
+                        field.classList.remove('show');
+                    });
+                } else if (text.startsWith('error:')) {
+                    throw new Error(text.substring(7)); // Remove 'error: ' prefix
+                } else {
+                    throw new Error('Unexpected response from server');
                 }
             })
             .catch(error => {
