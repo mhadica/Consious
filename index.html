@@ -147,12 +147,13 @@
             submitBtn.disabled = true;
 
             // Send data to Google Apps Script
+            const formDataToSend = new FormData();
+            formDataToSend.append('data', JSON.stringify(data));
+
             fetch(scriptURL, {
                 method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: formDataToSend,
+                redirect: 'follow'
             })
             .then(response => {
                 if (!response.ok) {
