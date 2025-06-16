@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conscious Campus - Registration Form</title>
+    <link rel="stylesheet" href="form.css">>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CONSCIOUS CAMPUS</h1>
+            <p class="subtitle">Defining Student Activism</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact">Contact Number <span class="required">*</span></label>
+                    <input type="tel" id="contact" name="contact" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Position <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="syndicate" name="position" value="syndicate" required>
+                            <label for="syndicate" class="radio-label">Syndicate</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="campus-body" name="position" value="campus-body" required>
+                            <label for="campus-body" class="radio-label">Campus Body</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="syndicate-field" class="conditional-field">
+                    <label for="district">Select District <span class="required">*</span></label>
+                    <select id="district" name="district">
+                        <option value="">Choose a district...</option>
+                        <option value="thiruvananthapuram">Thiruvananthapuram</option>
+                        <option value="kollam">Kollam</option>
+                        <option value="pathanamthitta">Pathanamthitta</option>
+                        <option value="alappuzha">Alappuzha</option>
+                        <option value="kottayam">Kottayam</option>
+                        <option value="idukki">Idukki</option>
+                        <option value="ernakulam">Ernakulam</option>
+                        <option value="thrissur">Thrissur</option>
+                        <option value="palakkad">Palakkad</option>
+                        <option value="malappuram">Malappuram</option>
+                        <option value="kozhikode">Kozhikode</option>
+                        <option value="wayanad">Wayanad</option>
+                        <option value="kannur">Kannur</option>
+                        <option value="kasaragod">Kasaragod</option>
+                    </select>
+                </div>
+
+                <div id="campus-field" class="conditional-field">
+                    <label for="campus-name">Campus Name <span class="required">*</span></label>
+                    <input type="text" id="campus-name" name="campus-name" placeholder="Enter your campus name">
+                </div>
+
+                <button type="submit" class="submit-btn">Register Now</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const syndicateRadio = document.getElementById('syndicate');
+        const campusBodyRadio = document.getElementById('campus-body');
+        const syndicateField = document.getElementById('syndicate-field');
+        const campusField = document.getElementById('campus-field');
+        const districtSelect = document.getElementById('district');
+        const campusNameInput = document.getElementById('campus-name');
+
+        function toggleFields() {
+            // Reset both fields first
+            syndicateField.classList.remove('show');
+            campusField.classList.remove('show');
+            districtSelect.required = false;
+            campusNameInput.required = false;
+
+            // Then show the appropriate field
+            if (syndicateRadio.checked) {
+                setTimeout(() => {
+                    syndicateField.classList.add('show');
+                    districtSelect.required = true;
+                }, 50);
+            } else if (campusBodyRadio.checked) {
+                setTimeout(() => {
+                    campusField.classList.add('show');
+                    campusNameInput.required = true;
+                }, 50);
+            }
+        }
+
+        // Add event listeners for radio buttons
+        syndicateRadio.addEventListener('change', toggleFields);
+        campusBodyRadio.addEventListener('change', toggleFields);
+
+        // Call toggleFields on page load to set initial state
+        document.addEventListener('DOMContentLoaded', toggleFields);
+
+        // Add click event listeners to the entire radio option divs
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+                toggleFields();
+            });
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Basic validation
+            if (!data.name || !data.contact || !data.position) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            if (data.position === 'syndicate' && !data.district) {
+                alert('Please select a district.');
+                return;
+            }
+
+            if (data.position === 'campus-body' && !data['campus-name']) {
+                alert('Please enter your campus name.');
+                return;
+            }
+
+            // Replace with your Google Apps Script Web App URL
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwF8GNDK0xELPEDQF5wQjpIHtqtT--8NgEsRPg_wHpDU1pY_WBOhVm8ZPmcMPTLBBethg/exec';
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            // Send data to Google Apps Script
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                mode: 'cors'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Registration successful! Thank you for joining Conscious Campus.');
+                    document.getElementById('registrationForm').reset();
+                    // Reset conditional fields
+                    document.querySelectorAll('.conditional-field').forEach(field => {
+                        field.classList.remove('show');
+                    });
+                } else {
+                    throw new Error(data.message || 'Something went wrong');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
