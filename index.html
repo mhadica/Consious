@@ -101,6 +101,7 @@
         const divisionNameInput = document.getElementById('division-name');
 
         function toggleFields() {
+            console.log('toggleFields called');
             // Reset all fields first
             syndicateField.classList.remove('show');
             campusField.classList.remove('show');
@@ -109,21 +110,29 @@
             campusNameInput.required = false;
             divisionNameInput.required = false;
 
+            console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Campus Unit:', campusBodyRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
+
             // Then show the appropriate field
             if (syndicateRadio.checked) {
+                console.log('Syndicate checked, showing syndicate field');
                 setTimeout(() => {
                     syndicateField.classList.add('show');
                     districtSelect.required = true;
+                    console.log('Syndicate field should be visible. ClassList:', syndicateField.classList.contains('show'));
                 }, 50);
             } else if (campusBodyRadio.checked) {
+                console.log('Campus Unit checked, showing campus field');
                 setTimeout(() => {
                     campusField.classList.add('show');
                     campusNameInput.required = true;
+                    console.log('Campus field should be visible. ClassList:', campusField.classList.contains('show'));
                 }, 50);
             } else if (divisionSecretaryRadio.checked) {
+                console.log('Division Secretary checked, showing division field');
                 setTimeout(() => {
                     divisionField.classList.add('show');
                     divisionNameInput.required = true;
+                    console.log('Division field should be visible. ClassList:', divisionField.classList.contains('show'));
                 }, 50);
             }
         }
@@ -213,3 +222,7 @@
     </script>
 </body>
 </html>
+
+
+
+
