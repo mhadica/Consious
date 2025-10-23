@@ -24,26 +24,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Position <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="syndicate" name="position" value="syndicate" required>
-                            <label for="syndicate" class="radio-label">District Campus Syndicate</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="campus-body" name="position" value="campus-body" required>
-                            <label for="campus-body" class="radio-label">Campus Unit</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="division-secretary" name="position" value="division-secretary" required>
-                            <label for="division-secretary" class="radio-label">Division Campus Secretary</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="syndicate-field" class="conditional-field">
                     <label for="district">Select District <span class="required">*</span></label>
-                    <select id="district" name="district">
+                    <select id="district" name="district" required>
                         <option value="">Choose a district...</option>
                         <option value="thiruvananthapuram">Thiruvananthapuram</option>
                         <option value="kollam">Kollam</option>
@@ -65,6 +47,25 @@
                         <option value="kasaragod">Kasaragod</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label>Position <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="syndicate" name="position" value="syndicate" required>
+                            <label for="syndicate" class="radio-label">District Campus Syndicate</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="campus-body" name="position" value="campus-body" required>
+                            <label for="campus-body" class="radio-label">Campus Unit</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="division-secretary" name="position" value="division-secretary" required>
+                            <label for="division-secretary" class="radio-label">Division Campus Secretary</label>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div id="campus-field" class="conditional-field">
                     <label for="campus-name">Campus Name <span class="required">*</span></label>
@@ -92,7 +93,6 @@
         const syndicateRadio = document.getElementById('syndicate');
         const campusBodyRadio = document.getElementById('campus-body');
         const divisionSecretaryRadio = document.getElementById('division-secretary');
-        const syndicateField = document.getElementById('syndicate-field');
         const campusField = document.getElementById('campus-field');
         const divisionField = document.getElementById('division-field');
         const districtSelect = document.getElementById('district');
@@ -101,25 +101,16 @@
 
         function toggleFields() {
             console.log('toggleFields called');
-            // Reset all fields first
-            syndicateField.classList.remove('show');
+            // Reset conditional fields first
             campusField.classList.remove('show');
             divisionField.classList.remove('show');
-            districtSelect.required = false;
             campusNameInput.required = false;
             divisionNameInput.required = false;
 
             console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Campus Unit:', campusBodyRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
 
             // Then show the appropriate field
-            if (syndicateRadio.checked) {
-                console.log('Syndicate checked, showing syndicate field');
-                setTimeout(() => {
-                    syndicateField.classList.add('show');
-                    districtSelect.required = true;
-                    console.log('Syndicate field should be visible. ClassList:', syndicateField.classList.contains('show'));
-                }, 50);
-            } else if (campusBodyRadio.checked) {
+            if (campusBodyRadio.checked) {
                 console.log('Campus Unit checked, showing campus field');
                 setTimeout(() => {
                     campusField.classList.add('show');
@@ -133,6 +124,15 @@
                     divisionNameInput.required = true;
                     console.log('Division field should be visible. ClassList:', divisionField.classList.contains('show'));
                 }, 50);
+            } else if (syndicateRadio.checked) {
+                console.log('Syndicate checked - checking if district is selected for auto-submit');
+                // Check if district is already selected, if so, auto-submit
+                if (districtSelect.value) {
+                    console.log('District already selected, auto-submitting form');
+                    setTimeout(() => {
+                        document.getElementById('registrationForm').dispatchEvent(new Event('submit'));
+                    }, 100);
+                }
             }
         }
 
@@ -140,6 +140,18 @@
         syndicateRadio.addEventListener('change', toggleFields);
         campusBodyRadio.addEventListener('change', toggleFields);
         divisionSecretaryRadio.addEventListener('change', toggleFields);
+
+        // Add event listener for district selection
+        districtSelect.addEventListener('change', function() {
+            console.log('District changed to:', this.value);
+            // If syndicate is already selected and district is now selected, auto-submit
+            if (syndicateRadio.checked && this.value) {
+                console.log('Syndicate selected and district chosen, auto-submitting');
+                setTimeout(() => {
+                    document.getElementById('registrationForm').dispatchEvent(new Event('submit'));
+                }, 100);
+            }
+        });
 
         // Call toggleFields on page load to set initial state
         document.addEventListener('DOMContentLoaded', toggleFields);
@@ -160,13 +172,8 @@
             const data = Object.fromEntries(formData);
             
             // Basic validation
-            if (!data.name || !data.contact || !data.position) {
+            if (!data.name || !data.contact || !data.district || !data.position) {
                 alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (data.position === 'syndicate' && !data.district) {
-                alert('Please select a district.');
                 return;
             }
 
