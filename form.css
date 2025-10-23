@@ -1,3 +1,4 @@
+/* ...existing code... */
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +7,8 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1db584 0%, #16a085 100%);
+    /* Modern purple -> cyan background */
+    background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -14,15 +16,16 @@ body {
 .container {
     max-width: 600px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.97);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(12, 10, 30, 0.18);
     overflow: hidden;
     backdrop-filter: blur(10px);
 }
 
 .header {
-    background: linear-gradient(135deg, #1db584 0%, #16a085 100%);
+    /* Matching header gradient: vibrant purple -> cyan */
+    background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
     color: white;
     padding: 40px 30px;
     text-align: center;
@@ -36,20 +39,20 @@ body {
     right: -20px;
     width: 200px;
     height: 200px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 Q80 30 80 50 Q80 70 50 90 Q20 70 20 50 Q20 30 50 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') no-repeat;
-    opacity: 0.3;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 Q80 30 80 50 Q80 70 50 90 Q20 70 20 50 Q20 30 50 10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/></svg>') no-repeat;
+    opacity: 0.35;
 }
 
 .header h1 {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 6px rgba(10, 8, 25, 0.35);
 }
 
 .header .subtitle {
     font-size: 1.1rem;
-    opacity: 0.9;
+    opacity: 0.95;
     font-weight: 300;
 }
 
@@ -65,7 +68,7 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #1f2937;
     font-size: 1rem;
 }
 
@@ -74,20 +77,20 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 15px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e6e6e9;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: #fafafa;
+    background: #fbfbfd;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #1db584;
+    border-color: #06B6D4; /* cyan focus */
     background: white;
-    box-shadow: 0 0 0 3px rgba(29, 181, 132, 0.1);
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.08);
 }
 
 .radio-group {
@@ -101,7 +104,7 @@ body {
     align-items: center;
     cursor: pointer;
     padding: 12px 20px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e6e6e9;
     border-radius: 12px;
     transition: all 0.3s ease;
     flex: 1;
@@ -111,10 +114,10 @@ body {
 }
 
 .radio-option:hover {
-    border-color: #1db584;
-    background: rgba(29, 181, 132, 0.05);
+    border-color: #7C3AED;
+    background: rgba(124, 58, 237, 0.04);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(29, 181, 132, 0.1);
+    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.08);
 }
 
 .radio-option input[type="radio"] {
@@ -125,20 +128,20 @@ body {
 }
 
 .radio-option input[type="radio"]:checked + .radio-label {
-    color: #1db584;
+    color: #FF6B8A; /* accent pink */
     font-weight: 600;
 }
 
 .radio-option:has(input[type="radio"]:checked) {
-    border-color: #1db584;
-    background: rgba(29, 181, 132, 0.1);
+    border-color: #06B6D4;
+    background: rgba(6, 182, 212, 0.06);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(29, 181, 132, 0.15);
+    box-shadow: 0 6px 18px rgba(6, 182, 212, 0.10);
 }
 
 .radio-label {
     font-weight: 500;
-    color: #555;
+    color: #374151;
     transition: all 0.3s ease;
 }
 
@@ -148,23 +151,23 @@ body {
     padding: 25px;
     background: white;
     border-radius: 12px;
-    border: 2px solid #e0e0e0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 2px solid #e6e6e9;
+    box-shadow: 0 6px 18px rgba(15, 12, 30, 0.05);
     transition: all 0.3s ease;
 }
 
 .conditional-field.show {
     display: block;
     animation: slideDown 0.4s ease;
-    border-color: #1db584;
-    background: linear-gradient(to right, rgba(29, 181, 132, 0.05), white);
+    border-color: #06B6D4;
+    background: linear-gradient(to right, rgba(6, 182, 212, 0.04), white);
 }
 
 .conditional-field select,
 .conditional-field input {
     width: 100%;
     padding: 15px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e6e6e9;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -175,13 +178,13 @@ body {
 .conditional-field select:focus,
 .conditional-field input:focus {
     outline: none;
-    border-color: #1db584;
-    box-shadow: 0 0 0 3px rgba(29, 181, 132, 0.1);
+    border-color: #06B6D4;
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.08);
 }
 
 .conditional-field label {
     font-weight: 600;
-    color: #2c3e50;
+    color: #1f2937;
     display: block;
     margin-bottom: 8px;
 }
@@ -197,10 +200,11 @@ body {
     }
 }
 
+/* CTA uses pink -> purple gradient for a catchy pop */
 .submit-btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #1db584 0%, #16a085 100%);
+    background: linear-gradient(135deg, #FF6B8A 0%, #7C3AED 100%);
     color: white;
     border: none;
     border-radius: 12px;
@@ -215,7 +219,7 @@ body {
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(29, 181, 132, 0.3);
+    box-shadow: 0 14px 35px rgba(124, 58, 237, 0.22);
 }
 
 .submit-btn:active {
@@ -223,7 +227,7 @@ body {
 }
 
 .required {
-    color: #e74c3c;
+    color: #FF3B6F;
 }
 
 @media (max-width: 768px) {
@@ -263,27 +267,27 @@ body {
 
 /* New styles for footer-info */
 .footer-info {
-    background: linear-gradient(135deg, #1db584 0%, #16a085 100%); /* Matching header gradient */
+    background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%); /* Matching header gradient */
     color: white;
     padding: 30px;
     text-align: center;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     margin-top: -1px; /* Overlap slightly with container border */
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow upwards */
+    box-shadow: 0 -10px 30px rgba(12, 10, 30, 0.12);
 }
 
 .footer-info h2 {
     font-size: 1.60rem;
     font-weight: bold;
     margin-bottom: 15px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 4px rgba(10, 8, 25, 0.25);
     line-height: 1.2;
 }
 
 .footer-info p {
     font-size: 0.75rem;
-    opacity: 0.9;
+    opacity: 0.95;
     font-weight: 300;
     margin-bottom: 8px;
     display: flex;
@@ -300,3 +304,4 @@ body {
     font-size: 1.2rem; /* Adjust icon size */
     line-height: 1;
 }
+/* ...existing code... */
