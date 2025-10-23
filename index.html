@@ -80,123 +80,106 @@
     
     
     <script>
-        const syndicateRadio = document.getElementById('syndicate');
-        const divisionSecretaryRadio = document.getElementById('division-secretary');
-        const divisionField = document.getElementById('division-field');
-        const districtSelect = document.getElementById('district');
-        const divisionNameInput = document.getElementById('division-name');
+    const syndicateRadio = document.getElementById('syndicate');
+    const divisionSecretaryRadio = document.getElementById('division-secretary');
+    const divisionField = document.getElementById('division-field');
+    const districtSelect = document.getElementById('district');
+    const divisionNameInput = document.getElementById('division-name');
 
-        function toggleFields() {
-            console.log('toggleFields called');
-            // Reset conditional fields first
-            divisionField.classList.remove('show');
-            divisionNameInput.required = false;
+    function toggleFields() {
+        console.log('toggleFields called');
+        // Reset conditional fields first
+        divisionField.classList.remove('show');
+        divisionNameInput.required = false;
 
-            console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
+        console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
 
-            // Then show the appropriate field
-            if (divisionSecretaryRadio.checked) {
-                console.log('Division Secretary checked, showing division field');
-                setTimeout(() => {
-                    divisionField.classList.add('show');
-                    divisionNameInput.required = true;
-                    console.log('Division field should be visible. ClassList:', divisionField.classList.contains('show'));
-                }, 50);
-            } else if (syndicateRadio.checked) {
-                console.log('Syndicate checked - checking if district is selected for auto-submit');
-                // Check if district is already selected, if so, auto-submit
-                if (districtSelect.value) {
-                    console.log('District already selected, auto-submitting form');
-                    setTimeout(() => {
-                        document.getElementById('registrationForm').dispatchEvent(new Event('submit'));
-                    }, 100);
-                }
-            }
+        // Then show the appropriate field
+        if (divisionSecretaryRadio.checked) {
+            console.log('Division Secretary checked, showing division field');
+            setTimeout(() => {
+                divisionField.classList.add('show');
+                divisionNameInput.required = true;
+                console.log('Division field should be visible. ClassList:', divisionField.classList.contains('show'));
+            }, 50);
+        } 
+        // Removed auto-submit logic for Syndicate
+    }
+
+    // Add event listeners for radio buttons
+    syndicateRadio.addEventListener('change', toggleFields);
+    divisionSecretaryRadio.addEventListener('change', toggleFields);
+
+    // Add event listener for district selection (auto-submit removed)
+    districtSelect.addEventListener('change', function() {
+        console.log('District changed to:', this.value);
+    });
+
+    // Call toggleFields on page load to set initial state
+    document.addEventListener('DOMContentLoaded', toggleFields);
+
+    // Add click event listeners to the entire radio option divs
+    document.querySelectorAll('.radio-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            radio.checked = true;
+            toggleFields();
+        });
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Basic validation
+        if (!data.name || !data.contact || !data.district || !data.position) {
+            alert('Please fill in all required fields.');
+            return;
         }
 
-        // Add event listeners for radio buttons
-        syndicateRadio.addEventListener('change', toggleFields);
-        divisionSecretaryRadio.addEventListener('change', toggleFields);
+        if (data.position === 'division-secretary' && !data['division-name']) {
+            alert('Please enter your division name.');
+            return;
+        }
 
-        // Add event listener for district selection
-        districtSelect.addEventListener('change', function() {
-            console.log('District changed to:', this.value);
-            // If syndicate is already selected and district is now selected, auto-submit
-            if (syndicateRadio.checked && this.value) {
-                console.log('Syndicate selected and district chosen, auto-submitting');
-                setTimeout(() => {
-                    document.getElementById('registrationForm').dispatchEvent(new Event('submit'));
-                }, 100);
-            }
-        });
+        // Replace with your Google Apps Script Web App URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxC9feI79b3Xgq8ht1xFeuHVs3pbeusk2QSfV68TZChMy_GXiWCiBwOTPYYyGBtRYpV5w/exec';
+        
+        // Show loading state
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
 
-        // Call toggleFields on page load to set initial state
-        document.addEventListener('DOMContentLoaded', toggleFields);
+        // Send data to Google Apps Script
+        const formDataToSend = new FormData();
+        formDataToSend.append('data', JSON.stringify(data));
 
-        // Add click event listeners to the entire radio option divs
-        document.querySelectorAll('.radio-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const radio = this.querySelector('input[type="radio"]');
-                radio.checked = true;
-                toggleFields();
+        fetch(scriptURL, {
+            method: 'POST',
+            body: formDataToSend,
+            mode: 'no-cors'
+        })
+        .then(() => {
+            alert('Registration successful! Thank you for registering.');
+            document.getElementById('registrationForm').reset();
+            // Reset conditional fields
+            document.querySelectorAll('.conditional-field').forEach(field => {
+                field.classList.remove('show');
             });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error: ' + error.message);
+        })
+        .finally(() => {
+            // Reset button state
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
         });
-
-        document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Basic validation
-            if (!data.name || !data.contact || !data.district || !data.position) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (data.position === 'division-secretary' && !data['division-name']) {
-                alert('Please enter your division name.');
-                return;
-            }
-
-            // Replace with your Google Apps Script Web App URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxC9feI79b3Xgq8ht1xFeuHVs3pbeusk2QSfV68TZChMy_GXiWCiBwOTPYYyGBtRYpV5w/exec';
-            
-            // Show loading state
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalBtnText = submitBtn.textContent;
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
-
-            // Send data to Google Apps Script
-            const formDataToSend = new FormData();
-            formDataToSend.append('data', JSON.stringify(data));
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formDataToSend,
-                mode: 'no-cors'
-            })
-            .then(response => {
-                // Since we're using no-cors, we can't read the response
-                // Assume success if we get here
-                alert('Registration successful! Thank you for registering.');
-                document.getElementById('registrationForm').reset();
-                // Reset conditional fields
-                document.querySelectorAll('.conditional-field').forEach(field => {
-                    field.classList.remove('show');
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-            })
-            .finally(() => {
-                // Reset button state
-                submitBtn.textContent = originalBtnText;
-                submitBtn.disabled = false;
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
