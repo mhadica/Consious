@@ -56,20 +56,10 @@
                             <label for="syndicate" class="radio-label">District Campus Syndicate</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="campus-body" name="position" value="campus-body" required>
-                            <label for="campus-body" class="radio-label">Campus Unit</label>
-                        </div>
-                        <div class="radio-option">
                             <input type="radio" id="division-secretary" name="position" value="division-secretary" required>
                             <label for="division-secretary" class="radio-label">Division Campus Secretary</label>
                         </div>
                     </div>
-                </div>
-
-
-                <div id="campus-field" class="conditional-field">
-                    <label for="campus-name">Campus Name <span class="required">*</span></label>
-                    <input type="text" id="campus-name" name="campus-name" placeholder="Enter your campus name">
                 </div>
 
                 <div id="division-field" class="conditional-field">
@@ -91,33 +81,21 @@
     
     <script>
         const syndicateRadio = document.getElementById('syndicate');
-        const campusBodyRadio = document.getElementById('campus-body');
         const divisionSecretaryRadio = document.getElementById('division-secretary');
-        const campusField = document.getElementById('campus-field');
         const divisionField = document.getElementById('division-field');
         const districtSelect = document.getElementById('district');
-        const campusNameInput = document.getElementById('campus-name');
         const divisionNameInput = document.getElementById('division-name');
 
         function toggleFields() {
             console.log('toggleFields called');
             // Reset conditional fields first
-            campusField.classList.remove('show');
             divisionField.classList.remove('show');
-            campusNameInput.required = false;
             divisionNameInput.required = false;
 
-            console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Campus Unit:', campusBodyRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
+            console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
 
             // Then show the appropriate field
-            if (campusBodyRadio.checked) {
-                console.log('Campus Unit checked, showing campus field');
-                setTimeout(() => {
-                    campusField.classList.add('show');
-                    campusNameInput.required = true;
-                    console.log('Campus field should be visible. ClassList:', campusField.classList.contains('show'));
-                }, 50);
-            } else if (divisionSecretaryRadio.checked) {
+            if (divisionSecretaryRadio.checked) {
                 console.log('Division Secretary checked, showing division field');
                 setTimeout(() => {
                     divisionField.classList.add('show');
@@ -138,7 +116,6 @@
 
         // Add event listeners for radio buttons
         syndicateRadio.addEventListener('change', toggleFields);
-        campusBodyRadio.addEventListener('change', toggleFields);
         divisionSecretaryRadio.addEventListener('change', toggleFields);
 
         // Add event listener for district selection
@@ -174,11 +151,6 @@
             // Basic validation
             if (!data.name || !data.contact || !data.district || !data.position) {
                 alert('Please fill in all required fields.');
-                return;
-            }
-
-            if (data.position === 'campus-body' && !data['campus-name']) {
-                alert('Please enter your campus name.');
                 return;
             }
 
@@ -228,7 +200,3 @@
     </script>
 </body>
 </html>
-
-
-
-
