@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Event Registration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+  <title>Registration Form</title>
+  <style>
     body {
       font-family: Arial, sans-serif;
       background: #07121c;
@@ -170,12 +170,12 @@
           <span id="locText"></span>
         </div>
       </div>
- 
+
       <div class="field">
         <label>Phone number</label>
         <input type="tel" id="phone" placeholder="Enter 10-digit number" maxlength="10" required />
       </div>
- 
+
       <div class="field">
         <label>Samiti</label>
         <select id="samiti" required>
@@ -186,75 +186,94 @@
           <option>Division Convenor</option>
         </select>
       </div>
- 
+
       <hr class="divider">
- 
+
       <button class="submit-btn" id="submitBtn" type="button">Register Now</button>
- 
+
       <div class="success-msg" id="successMsg">
         <svg width="40" height="40" viewBox="0 0 40 40" style="display:block;margin:0 auto 10px"><circle cx="20" cy="20" r="20" fill="rgba(16,185,129,0.18)"/><path d="M12 20l6 6 10-12" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Registration submitted successfully!
       </div>
     </div>
   </div>
-  
 
-<script>
-const kozhikodeDistricts = [
-  "Kasargod","Kannur","Wayanad","Nilgiri",
-  "Kozhikode North","Kozhikode South",
-  "Malappuram West","Malappuram East","Palakkad"
-];
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
 
-const districtSelect = document.getElementById("district");
-const locationText = document.getElementById("locationText");
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvMMO7ItCPHXX7SVCTC3DEojyzAwc9ZQpka6fh6EnTv6eI7xhO0DxVxFzvXwSNBRhc/exec";
 
-districtSelect.addEventListener("change", () => {
-  const district = districtSelect.value;
+    const kozhikodeDistricts = [
+      "Kasargod","Kannur","Wayanad","Nilgiri",
+      "Kozhikode North","Kozhikode South",
+      "Malappuram West","Malappuram East","Palakkad"
+    ];
 
-  if (kozhikodeDistricts.includes(district)) {
-    locationText.innerText = "📍 Location: Samastha Centre";
-  } else if (district !== "") {
-    locationText.innerText = "📍 Location: Students Centre";
-  } else {
-    locationText.innerText = "";
-  }
-});
+    const districtSelect = document.getElementById('district');
+    const badge = document.getElementById('locBadge');
+    const locText = document.getElementById('locText');
 
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData.entries());
-
-  // Category + location logic
-  if (kozhikodeDistricts.includes(data.district)) {
-    data.category = "Kozhikode";
-    data.location = "Samastha Centre";
-  } else {
-    data.category = "Ernakulam";
-    data.location = "Students Centre";
-  }
-
-  try {
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-  
-    await fetch("https://script.google.com/macros/s/AKfycbxvMMO7ItCPHXX7SVCTC3DEojyzAwc9ZQpka6fh6EnTv6eI7xhO0DxVxFzvXwSNBRhc/exec", {
-      method: "POST",
-      body: formData
+    districtSelect.addEventListener('change', function() {
+      const val = this.value;
+      if (!val) {
+        badge.classList.remove('visible');
+        return;
+      }
+      const isKozhikode = kozhikodeDistricts.includes(val);
+      locText.textContent = val + ' · ' + (isKozhikode ? 'Samastha Centre' : 'Students Centre');
+      badge.classList.add('visible');
     });
-  
-    alert("✅ Submitted successfully");
-    document.getElementById("form").reset();
-    locationText.innerText = "";
-  
-  } catch (err) {
-    alert("❌ Submission failed");
-    console.error(err);
-  }
-});
-</script>
 
+    document.getElementById('phone').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', async function() {
+      const district = districtSelect.value;
+      const phone = document.getElementById('phone').value;
+      const samiti = document.getElementById('samiti').value;
+
+      if (!district || !samiti || phone.length !== 10) {
+        this.style.background = 'linear-gradient(90deg,#e24b4a,#c0392b)';
+        this.textContent = 'Please complete all fields';
+        setTimeout(() => {
+          this.style.background = '';
+          this.textContent = 'Register Now';
+        }, 1800);
+        return;
+      }
+
+      const isKozhikode = kozhikodeDistricts.includes(district);
+      const payload = {
+        district,
+        phone,
+        samiti,
+        category: isKozhikode ? 'Kozhikode' : 'Ernakulam',
+        location: isKozhikode ? 'Samastha Centre' : 'Students Centre'
+      };
+
+      this.textContent = 'Submitting…';
+      this.disabled = true;
+
+      try {
+        const fd = new FormData();
+        fd.append('data', JSON.stringify(payload));
+        await fetch(SCRIPT_URL, { method: 'POST', body: fd });
+        this.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        this.style.background = 'linear-gradient(90deg,#e24b4a,#c0392b)';
+        this.textContent = 'Submission failed — try again';
+        this.disabled = false;
+        setTimeout(() => {
+          this.style.background = '';
+          this.textContent = 'Register Now';
+        }, 2500);
+      }
+    });
+
+    }); // DOMContentLoaded
+  </script>
 </body>
 </html>
