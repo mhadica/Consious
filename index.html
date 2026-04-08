@@ -4,90 +4,200 @@
   <meta charset="UTF-8">
   <title>Event Registration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-    }
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    select, input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-    }
-    .location {
-      margin-top: 10px;
-      font-weight: bold;
-      color: green;
-    }
-  </style>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #07121c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.25); }
+    50% { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
+  }
+  .form-wrap {
+    max-width: 420px;
+    width: 100%;
+    margin: 2rem auto;
+    background: linear-gradient(145deg, #0f172a, #0d2a3a);
+    border-radius: 20px;
+    padding: 2px;
+    animation: fadeSlideIn 0.5s ease both;
+  }
+  .form-inner {
+    background: #0b1e2d;
+    border-radius: 18px;
+    padding: 2rem 2rem 2.25rem;
+  }
+  .field {
+    margin-bottom: 1.1rem;
+    animation: fadeSlideIn 0.45s ease both;
+  }
+  .field:nth-child(1) { animation-delay: 0.08s; }
+  .field:nth-child(2) { animation-delay: 0.14s; }
+  .field:nth-child(3) { animation-delay: 0.20s; }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #5fbfaa;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  select, input[type="tel"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 14px;
+    background: #0d2237;
+    border: 1.5px solid #1a3d55;
+    border-radius: 10px;
+    color: #d4f1e8;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235fbfaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  select option { background: #0b1e2d; color: #d4f1e8; }
+  select:focus, input[type="tel"]:focus {
+    border-color: #10b981;
+    background: #0a2232;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.18);
+    animation: pulse-border 1.6s ease infinite;
+  }
+  select:hover, input[type="tel"]:hover { border-color: #0ea5e9; }
+  input::placeholder { color: #2e6a7c; }
+  .location-badge {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(90deg, rgba(16,185,129,0.12), rgba(14,165,233,0.10));
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #34d399;
+    animation: fadeSlideIn 0.3s ease both;
+  }
+  .location-badge.visible { display: flex; align-items: center; gap: 8px; }
+  .loc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.25);
+  }
+  .submit-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #0ea5e9, #10b981, #0ea5e9);
+    background-size: 200% auto;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background-position 0.5s ease, transform 0.15s, box-shadow 0.2s;
+    animation: fadeSlideIn 0.45s 0.28s ease both;
+  }
+  .submit-btn:hover {
+    background-position: right center;
+    box-shadow: 0 6px 24px rgba(16,185,129,0.28);
+    transform: translateY(-1px);
+  }
+  .submit-btn:active { transform: scale(0.98); }
+  .divider {
+    border: none;
+    border-top: 1px solid #112840;
+    margin: 1.5rem 0 1.25rem;
+  }
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 1rem;
+    color: #34d399;
+    font-size: 15px;
+    animation: fadeSlideIn 0.4s ease both;
+  }
+</style>
 </head>
-
 <body>
+<div class="form-wrap">
+  <div class="form-inner">
+    <div class="field">
+      <label>District</label>
+      <select id="district" required>
+        <option value="">— Select district —</option>
+        <option>Kasargod</option>
+        <option>Kannur</option>
+        <option>Wayanad</option>
+        <option>Nilgiri</option>
+        <option>Kozhikode North</option>
+        <option>Kozhikode South</option>
+        <option>Malappuram West</option>
+        <option>Malappuram East</option>
+        <option>Palakkad</option>
+        <option>Thrissur</option>
+        <option>Ernakulam</option>
+        <option>Alappuzha</option>
+        <option>Kottayam</option>
+        <option>Idukki LR</option>
+        <option>Idukki HR</option>
+        <option>Pathanamthitta</option>
+        <option>Kollam</option>
+        <option>Thiruvananthapuram</option>
+      </select>
+      <div class="location-badge" id="locBadge">
+        <span class="loc-dot"></span>
+        <span id="locText"></span>
+      </div>
+    </div>
 
-<div class="container">
-  <h2>Register</h2>
+    <div class="field">
+      <label>Phone number</label>
+      <input type="tel" id="phone" placeholder="Enter 10-digit number" maxlength="10" required />
+    </div>
 
-  <form id="form">
+    <div class="field">
+      <label>Samiti</label>
+      <select id="samiti" required>
+        <option value="">— Select role —</option>
+        <option>District Secretary</option>
+        <option>District Convenor</option>
+        <option>Division Secretary</option>
+        <option>Division Convenor</option>
+      </select>
+    </div>
 
-    <!-- District -->
-    <label>Select District</label>
-    <select name="district" id="district" required>
-      <option value="">-- Select District --</option>
+    <hr class="divider">
 
-      <!-- Kozhikode group -->
-      <option>Kasargod</option>
-      <option>Kannur</option>
-      <option>Wayanad</option>
-      <option>Nilgiri</option>
-      <option>Kozhikode North</option>
-      <option>Kozhikode South</option>
-      <option>Malappuram West</option>
-      <option>Malappuram East</option>
-      <option>Palakkad</option>
+    <button class="submit-btn" id="submitBtn" type="button">Register Now</button>
 
-      <!-- Ernakulam group -->
-      <option>Thrissur</option>
-      <option>Ernakulam</option>
-      <option>Alappuzha</option>
-      <option>Kottayam</option>
-      <option>Idukki LR</option>
-      <option>Idukki HR</option>
-      <option>Pathanamthitta</option>
-      <option>Kollam</option>
-      <option>Thiruvananthapuram</option>
-    </select>
-
-    <!-- Location Display -->
-    <div id="locationText" class="location"></div>
-
-    <!-- Phone -->
-    <label>Phone Number</label>
-    <input type="tel" name="phone" required pattern="[0-9]{10}" placeholder="Enter 10 digit number">
-
-    <!-- Samiti -->
-    <label>Samiti</label>
-    <select name="samiti" required>
-      <option value="">-- Select --</option>
-      <option>District Secretary</option>
-      <option>District Convenor</option>
-      <option>Division Secretary</option>
-      <option>Division Convenor</option>
-    </select>
-
-    <button type="submit">Submit</button>
-
-  </form>
+    <div class="success-msg" id="successMsg">
+      <svg width="40" height="40" viewBox="0 0 40 40" style="display:block;margin:0 auto 10px"><circle cx="20" cy="20" r="20" fill="rgba(16,185,129,0.18)"/><path d="M12 20l6 6 10-12" stroke="#10b981" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Registration submitted successfully!
+    </div>
+  </div>
 </div>
+  
 
 <script>
 const kozhikodeDistricts = [
