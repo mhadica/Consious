@@ -220,7 +220,7 @@
         return;
       }
       const isKozhikode = kozhikodeDistricts.includes(val);
-      locText.textContent = val + ' · ' + (isKozhikode ? 'Samastha Centre' : 'Students Centre');
+      locText.textContent = 'location · ' + (isKozhikode ? 'Samastha Centre' : 'Students Centre');
       badge.classList.add('visible');
     });
 
