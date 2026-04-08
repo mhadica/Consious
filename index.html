@@ -127,18 +127,18 @@ document.getElementById("form").addEventListener("submit", async (e) => {
   }
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbxbFQbeT_fosMJNCfbe15i24JCgjyeE4vsBJJK5123E_6VotYOAt4Fnifoado6X-VWm/exec", {
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+  
+    await fetch("https://script.google.com/macros/s/AKfycbxvMMO7ItCPHXX7SVCTC3DEojyzAwc9ZQpka6fh6EnTv6eI7xhO0DxVxFzvXwSNBRhc/exec", {
       method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      body: formData
     });
-
+  
     alert("✅ Submitted successfully");
     document.getElementById("form").reset();
     locationText.innerText = "";
-
+  
   } catch (err) {
     alert("❌ Submission failed");
     console.error(err);
