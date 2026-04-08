@@ -1,185 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proc(s)eed- Registration Form</title>
-    <link rel="stylesheet" href="form.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Proc(s)eed Registration Form</h1>
-        </div>
-        <div class="form-container">
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="name">Name <span class="required">*</span></label>
-                    <input type="text" id="name" name="name" required>
-                </div>
+  <meta charset="UTF-8">
+  <title>Event Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                <div class="form-group">
-                    <label for="contact">Contact Number <span class="required">*</span></label>
-                    <input type="tel" id="contact" name="contact" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="district">Select District <span class="required">*</span></label>
-                    <select id="district" name="district" required>
-                        <option value="">Choose a district...</option>
-                        <option value="thiruvananthapuram">Thiruvananthapuram</option>
-                        <option value="kollam">Kollam</option>
-                        <option value="pathanamthitta">Pathanamthitta</option>
-                        <option value="Nilgris">Nilgris</option>
-                        <option value="alappuzha">Alappuzha</option>
-                        <option value="kottayam">Kottayam</option>
-                        <option value="idukki HR">Idukki HR</option>
-                        <option value="idukki LR">Idukki LR</option>
-                        <option value="ernakulam">Ernakulam</option>
-                        <option value="thrissur">Thrissur</option>
-                        <option value="palakkad">Palakkad</option>
-                        <option value="malappuram East">Malappuram East</option>
-                        <option value="malappuram West">Malappuram West</option>
-                        <option value="kozhikode South">Kozhikode South</option>
-                        <option value="kozhikode North">Kozhikode North</option>
-                        <option value="wayanad">Wayanad</option>
-                        <option value="kannur">Kannur</option>
-                        <option value="kasaragod">Kasaragod</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Position <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="syndicate" name="position" value="syndicate" required>
-                            <label for="syndicate" class="radio-label">District Campus Syndicate</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="division-secretary" name="position" value="division-secretary" required>
-                            <label for="division-secretary" class="radio-label">Division Campus Secretary</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="division-field" class="conditional-field">
-                    <label for="division-name">Division Name <span class="required">*</span></label>
-                    <input type="text" id="division-name" name="division-name" placeholder="Enter your division name">
-                </div>
-
-                <button type="submit" class="submit-btn">Register Now</button>
-            </form>
-        </div>
-
-        <div class="footer-info">
-            <h2>Campus Syndicate • SSF KERALA</h2>
-            <p class="location"> Students' Centre, Calicut-4</p>
-            <p class="website"><span class="icon">&#x1F310;</span> www.ssfkerala.org</p>
-        </div>
-    </div>
-    
-    
-    <script>
-    const syndicateRadio = document.getElementById('syndicate');
-    const divisionSecretaryRadio = document.getElementById('division-secretary');
-    const divisionField = document.getElementById('division-field');
-    const districtSelect = document.getElementById('district');
-    const divisionNameInput = document.getElementById('division-name');
-
-    function toggleFields() {
-        console.log('toggleFields called');
-        // Reset conditional fields first
-        divisionField.classList.remove('show');
-        divisionNameInput.required = false;
-
-        console.log('Radio states - Syndicate:', syndicateRadio.checked, 'Division Secretary:', divisionSecretaryRadio.checked);
-
-        // Then show the appropriate field
-        if (divisionSecretaryRadio.checked) {
-            console.log('Division Secretary checked, showing division field');
-            setTimeout(() => {
-                divisionField.classList.add('show');
-                divisionNameInput.required = true;
-                console.log('Division field should be visible. ClassList:', divisionField.classList.contains('show'));
-            }, 50);
-        } 
-        // Removed auto-submit logic for Syndicate
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
     }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .location {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
 
-    // Add event listeners for radio buttons
-    syndicateRadio.addEventListener('change', toggleFields);
-    divisionSecretaryRadio.addEventListener('change', toggleFields);
+<body>
 
-    // Add event listener for district selection (auto-submit removed)
-    districtSelect.addEventListener('change', function() {
-        console.log('District changed to:', this.value);
+<div class="container">
+  <h2>Register</h2>
+
+  <form id="form">
+
+    <!-- District -->
+    <label>Select District</label>
+    <select name="district" id="district" required>
+      <option value="">-- Select District --</option>
+
+      <!-- Kozhikode group -->
+      <option>Kasargod</option>
+      <option>Kannur</option>
+      <option>Wayanad</option>
+      <option>Nilgiri</option>
+      <option>Kozhikode North</option>
+      <option>Kozhikode South</option>
+      <option>Malappuram West</option>
+      <option>Malappuram East</option>
+      <option>Palakkad</option>
+
+      <!-- Ernakulam group -->
+      <option>Thrissur</option>
+      <option>Ernakulam</option>
+      <option>Alappuzha</option>
+      <option>Kottayam</option>
+      <option>Idukki LR</option>
+      <option>Idukki HR</option>
+      <option>Pathanamthitta</option>
+      <option>Kollam</option>
+      <option>Thiruvananthapuram</option>
+    </select>
+
+    <!-- Location Display -->
+    <div id="locationText" class="location"></div>
+
+    <!-- Phone -->
+    <label>Phone Number</label>
+    <input type="tel" name="phone" required pattern="[0-9]{10}" placeholder="Enter 10 digit number">
+
+    <!-- Samiti -->
+    <label>Samiti</label>
+    <select name="samiti" required>
+      <option value="">-- Select --</option>
+      <option>District Secretary</option>
+      <option>District Convenor</option>
+      <option>Division Secretary</option>
+      <option>Division Convenor</option>
+    </select>
+
+    <button type="submit">Submit</button>
+
+  </form>
+</div>
+
+<script>
+const kozhikodeDistricts = [
+  "Kasargod","Kannur","Wayanad","Nilgiri",
+  "Kozhikode North","Kozhikode South",
+  "Malappuram West","Malappuram East","Palakkad"
+];
+
+const districtSelect = document.getElementById("district");
+const locationText = document.getElementById("locationText");
+
+districtSelect.addEventListener("change", () => {
+  const district = districtSelect.value;
+
+  if (kozhikodeDistricts.includes(district)) {
+    locationText.innerText = "📍 Location: Samastha Centre";
+  } else if (district !== "") {
+    locationText.innerText = "📍 Location: Students Centre";
+  } else {
+    locationText.innerText = "";
+  }
+});
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+
+  // Category + location logic
+  if (kozhikodeDistricts.includes(data.district)) {
+    data.category = "Kozhikode";
+    data.location = "Samastha Centre";
+  } else {
+    data.category = "Ernakulam";
+    data.location = "Students Centre";
+  }
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycby1fR2Wju0zrlnNXxwjLmffyQQmdkXSuhxhsRMqrap_upeXHz2newzyAXi_trEF8X9K/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
 
-    // Call toggleFields on page load to set initial state
-    document.addEventListener('DOMContentLoaded', toggleFields);
+    alert("✅ Submitted successfully");
+    document.getElementById("form").reset();
+    locationText.innerText = "";
 
-    // Add click event listeners to the entire radio option divs
-    document.querySelectorAll('.radio-option').forEach(option => {
-        option.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            radio.checked = true;
-            toggleFields();
-        });
-    });
-
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
-        
-        // Basic validation
-        if (!data.name || !data.contact || !data.district || !data.position) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        if (data.position === 'division-secretary' && !data['division-name']) {
-            alert('Please enter your division name.');
-            return;
-        }
-
-        // Replace with your Google Apps Script Web App URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxC9feI79b3Xgq8ht1xFeuHVs3pbeusk2QSfV68TZChMy_GXiWCiBwOTPYYyGBtRYpV5w/exec';
-        
-        // Show loading state
-        const submitBtn = document.querySelector('.submit-btn');
-        const originalBtnText = submitBtn.textContent;
-        submitBtn.textContent = 'Submitting...';
-        submitBtn.disabled = true;
-
-        // Send data to Google Apps Script
-        const formDataToSend = new FormData();
-        formDataToSend.append('data', JSON.stringify(data));
-
-        fetch(scriptURL, {
-            method: 'POST',
-            body: formDataToSend,
-            mode: 'no-cors'
-        })
-        .then(() => {
-            alert('Registration successful! Thank you for registering.');
-            document.getElementById('registrationForm').reset();
-            // Reset conditional fields
-            document.querySelectorAll('.conditional-field').forEach(field => {
-                field.classList.remove('show');
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error: ' + error.message);
-        })
-        .finally(() => {
-            // Reset button state
-            submitBtn.textContent = originalBtnText;
-            submitBtn.disabled = false;
-        });
-    });
+  } catch (err) {
+    alert("❌ Submission failed");
+    console.error(err);
+  }
+});
 </script>
+
 </body>
 </html>
